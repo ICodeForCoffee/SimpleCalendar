@@ -1,0 +1,61 @@
+    #calendar {
+        max-width: 95%;
+        margin: 0 auto;
+    }
+
+    .calendar-table {
+        width: 100%;
+        border: solid 1px;
+        margin: 2px;
+    }
+
+    .calendar-header-title {
+        float: left;
+        font-size: 20px;
+        margin-bottom: 4px;
+    }
+
+    .calendar-header-buttons {
+        float: right;
+        margin-bottom: 4px;
+        margin-left: 50px;
+    }
+
+    .calendar-table td {
+        /*margin: 2px;*/
+        padding: 2px;
+    }
+
+    .calendar-day-header td {
+        border-top: solid 1px;
+        border-left: solid 1px;
+        border-right: solid 1px;
+        text-align: right;
+    }
+
+    .calendar-day-cell td {
+        border-left: solid 1px;
+        border-right: solid 1px;
+        height: 50px;
+        vertical-align: top;
+    }
+
+    .calendar-day-current-day {
+        background-color: beige;
+    }
+
+    .calendar-day-weekend {
+        background-color: linen;
+    }
+
+    .calendar-day-other-month {
+        background-color: lightgray;
+    }
+    
+    .calendar-day-of-week-header td {
+        text-align: center;
+        font-weight: bold;
+        border-left: solid 1px;
+        border-right: solid 1px;
+        width: 14.28%;
+    }
