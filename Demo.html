@@ -9,12 +9,19 @@ This utlity is designed to offer just the basics for setting up more complex fea
 </p>
 <div id="calendar"></div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="SimpleCalendar.js"></script>
 <script>
-    $(document).ready(function () {
+    function ready(fn) {
+        if (document.readyState !== 'loading') {
+            fn();
+        } else {
+            document.addEventListener('DOMContentLoaded', fn);
+        }
+    }
+
+    ready(function(){
         simpleCalendar();
-      });
+      })
 </script>
 </body>
 </html>

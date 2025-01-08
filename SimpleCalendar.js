@@ -100,10 +100,11 @@ function buildCalendar(month, year) {
 
     htmlToAdd = "<table class=\"calendar-table\">" + htmlToAdd + "</table>";
 
-    $("#calendar").html(htmlToAdd);
-    $("#calendar-lastMonthButton").bind("click", function () { lastMonth() });
-    $("#calendar-nextMonthButton").bind("click", function () { nextMonth() });
-    $("#calendar-currnetMonthButton").bind("click", function () { currentMonth() });
+    //todo the ID should be passed in.
+    document.getElementById("calendar").innerHTML = htmlToAdd;
+    document.getElementById("calendar-lastMonthButton").addEventListener("click", function () { lastMonth(); });
+    document.getElementById("calendar-nextMonthButton").addEventListener("click", function () { nextMonth() });
+    document.getElementById("calendar-currnetMonthButton").addEventListener("click", function () { currentMonth() });
 }
 
 function getHeaderPart(month, year) {
