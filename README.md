@@ -1,2 +1,2 @@
 # SimpleCalendar
-A simple calendar rendered using JQuery.
+A simple calendar rendered using JavaScript and Bootstrap 5.
