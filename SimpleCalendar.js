@@ -4,12 +4,14 @@ var months = [
 ];
 var currentMonthDisplayed;
 var currentYearDisplayed;
+var itemToBindTo;
 
-function simpleCalendar() {
+function simpleCalendar(itemToBindTo2) {
     var today = new Date();
     var mm = today.getMonth(); //January is 0!
     var yyyy = today.getFullYear();
 
+    itemToBindTo = itemToBindTo2;
     buildCalendar(mm, yyyy);
 }
 
@@ -38,6 +40,10 @@ function currentMonth() {
 
     buildCalendar(mm, yyyy);
 }
+
+// function getCallingInstance() {
+
+// }
 
 //Uses the JavaScript Date convention - Months 0-11, Days 1-31
 function buildCalendar(month, year) {
@@ -101,17 +107,17 @@ function buildCalendar(month, year) {
     htmlToAdd = "<table class=\"calendar-table\">" + htmlToAdd + "</table>";
 
     //todo the ID should be passed in.
-    document.getElementById("calendar").innerHTML = htmlToAdd;
+    document.getElementById(itemToBindTo).innerHTML = htmlToAdd;
     document.getElementById("calendar-lastMonthButton").addEventListener("click", function () { lastMonth(); });
     document.getElementById("calendar-nextMonthButton").addEventListener("click", function () { nextMonth() });
     document.getElementById("calendar-currnetMonthButton").addEventListener("click", function () { currentMonth() });
 }
 
 function getHeaderPart(month, year) {
-    var htmlToAdd = "<div><div class=\"calendar-header-title\">" + months[month] + " " + year + "</div>";
-    htmlToAdd += "<div class=\"calendar-header-buttons\"><button id=\"calendar-lastMonthButton\">&lt;</button>";
-    htmlToAdd += "<button id=\"calendar-nextMonthButton\">&gt;</button></div>";
-    htmlToAdd += "<div class=\"calendar-header-buttons\"><button  id=\"calendar-currnetMonthButton\">Today</buutton></div></div>";
+    var htmlToAdd = "<div><div class=\"btn btn-primarycalendar-header-title\">" + months[month] + " " + year + "</div>";
+    htmlToAdd += "<div class=\"calendar-header-buttons\"><button id=\"calendar-lastMonthButton\" class=\"btn btn-primary\">&lt;</button>&nbsp;";
+    htmlToAdd += "<button id=\"calendar-nextMonthButton\" class=\"btn btn-primary\">&gt;</button></div>";
+    htmlToAdd += "<div class=\"calendar-header-buttons\"><button  id=\"calendar-currnetMonthButton\" class=\"btn btn-primary\">Today</buutton></div></div>";
     return htmlToAdd;
 }
 
