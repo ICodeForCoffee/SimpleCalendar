@@ -1,12 +1,10 @@
-var months = [
-    "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
-    "November", "December"
-];
 var currentMonthDisplayed;
 var currentYearDisplayed;
 var itemToBindTo;
 
 function simpleCalendar(itemToBindTo2) {
+
+
     var today = new Date();
     var mm = today.getMonth(); //January is 0!
     var yyyy = today.getFullYear();
@@ -114,7 +112,10 @@ function buildCalendar(month, year) {
 }
 
 function getHeaderPart(month, year) {
-    var htmlToAdd = "<div><div class=\"btn btn-primarycalendar-header-title\">" + months[month] + " " + year + "</div>";
+    firstOfMonth = new Date(year,  month, 1)
+    monthTitle = firstOfMonth.toLocaleString('default', { month: 'long'});
+
+    var htmlToAdd = "<div><h3 class=\"calendar-header-title\">" + monthTitle + " " + year + "</h3>";
     htmlToAdd += "<div class=\"calendar-header-buttons\"><button id=\"calendar-lastMonthButton\" class=\"btn btn-primary\">&lt;</button>&nbsp;";
     htmlToAdd += "<button id=\"calendar-nextMonthButton\" class=\"btn btn-primary\">&gt;</button></div>";
     htmlToAdd += "<div class=\"calendar-header-buttons\"><button  id=\"calendar-currnetMonthButton\" class=\"btn btn-primary\">Today</buutton></div></div>";
@@ -128,17 +129,5 @@ function getStartOfMonth(month, year) {
 }
 
 function getDaysInMonth(month, year) {
-    var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-    if (month === 1) {
-        if (year % 400 === 0) {
-            return 29;
-        } else if (year % 100 === 0) {
-            return 28;
-        } else if (year % 4 === 0) {
-            return 29;
-        }
-    }
-
-    return daysInMonth[month];
+    return new Date(year, month + 1, 0).getDate();
 }
