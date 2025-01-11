@@ -1,13 +1,13 @@
 var currentMonthDisplayed;
 var currentYearDisplayed;
 var itemToBindTo;
+var daysOfWeek;
 
 function simpleCalendar(itemToBindTo2) {
-
-
     var today = new Date();
     var mm = today.getMonth(); //January is 0!
     var yyyy = today.getFullYear();
+    daysOfWeek = getDaysOfWeek();
 
     itemToBindTo = itemToBindTo2;
     buildCalendar(mm, yyyy);
@@ -19,7 +19,6 @@ function nextMonth() {
         buildCalendar(0, (currentYearDisplayed + 1));
     } else {
         buildCalendar((currentMonthDisplayed + 1), currentYearDisplayed);
-
     }
 }
 
@@ -58,13 +57,11 @@ function buildCalendar(month, year) {
     today = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
     
     htmlToAdd += "<tr class=\"calendar-day-of-week-header\">";
-    htmlToAdd += "<td class=\"calendar-day-weekend\">Sunday</td>";
-    htmlToAdd += "<td>Monday</td>";
-    htmlToAdd += "<td>Tuesday</td>";
-    htmlToAdd += "<td>Wednesday</td>";
-    htmlToAdd += "<td>Thursday</td>";
-    htmlToAdd += "<td>Friday</td>";
-    htmlToAdd += "<td class=\"calendar-day-weekend\">Saturday</td></tr>";
+    for(i =0 ; i < 7; i++)
+    {
+        var cssClass = (i == 0 || i  == 6) ? "calendar-day-weekend" : "";
+        htmlToAdd += "<td class=\"" + cssClass + "\">" + daysOfWeek[i] + "</td>";
+    }
 
     for (var i = 0; daysInMonth >= dayOfMonthCounter && i < 6; i++) {
         htmlToAdd += "<tr class=\"calendar-day-header\">";
@@ -120,6 +117,15 @@ function getHeaderPart(month, year) {
     htmlToAdd += "<button id=\"calendar-nextMonthButton\" class=\"btn btn-primary\">&gt;</button></div>";
     htmlToAdd += "<div class=\"calendar-header-buttons\"><button  id=\"calendar-currnetMonthButton\" class=\"btn btn-primary\">Today</buutton></div></div>";
     return htmlToAdd;
+}
+
+function getDaysOfWeek() {
+    var daysOfWeek = [];
+    for (i = 1; i <= 7; i++) {
+        firstOfMonth = new Date(2024,  11, i)
+        daysOfWeek[i-1] = firstOfMonth.toLocaleString('default', { weekday: 'long'});
+    }
+    return daysOfWeek;
 }
 
 function getStartOfMonth(month, year) {
