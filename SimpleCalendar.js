@@ -1,51 +1,57 @@
-var currentMonthDisplayed;
-var currentYearDisplayed;
-var itemToBindTo;
 var daysOfWeek;
 
-function simpleCalendar(itemToBindTo2) {
+function simpleCalendar(calendarId) {
+    var calendarInstance = document.getElementById(calendarId);
+    calendarInstance.classList.add(`simple-calendar-root`);
     var today = new Date();
-    var mm = today.getMonth(); //January is 0!
-    var yyyy = today.getFullYear();
+    var month = today.getMonth(); //January is 0!
+    var year = today.getFullYear();
     daysOfWeek = getDaysOfWeek();
 
-    itemToBindTo = itemToBindTo2;
-    buildCalendar(mm, yyyy);
+    calendarInstance.setAttribute(`simple-calendar-current-month`, month);
+    calendarInstance.setAttribute(`simple-calendar-current-year`, year);
+
+    buildCalendar(month, year, calendarId);
 }
 
-function nextMonth() {
-    console.log("Trying to advance to next month");
+function nextMonth(event) {
+    var calendarInstance = event.target.closest(`.simple-calendar-root`);
+    currentMonthDisplayed = parseInt(calendarInstance.getAttribute(`simple-calendar-current-month`));
+    currentYearDisplayed = parseInt(calendarInstance.getAttribute(`simple-calendar-current-year`));
+
     if (currentMonthDisplayed === 11) {
-        buildCalendar(0, (currentYearDisplayed + 1));
+        buildCalendar(0, (currentYearDisplayed + 1), calendarInstance.id);
     } else {
-        buildCalendar((currentMonthDisplayed + 1), currentYearDisplayed);
+        buildCalendar((currentMonthDisplayed + 1), currentYearDisplayed, calendarInstance.id);
     }
 }
 
-function lastMonth() {
+function lastMonth(event) {
+    var calendarInstance = event.target.closest(`.simple-calendar-root`);
+    currentMonthDisplayed = parseInt(calendarInstance.getAttribute(`simple-calendar-current-month`));
+    currentYearDisplayed = parseInt(calendarInstance.getAttribute(`simple-calendar-current-year`));
+
     if (currentMonthDisplayed === 0) {
-        buildCalendar(11, (currentYearDisplayed - 1));
+        buildCalendar(11, (currentYearDisplayed - 1), calendarInstance.id);
     } else {
-        buildCalendar((currentMonthDisplayed - 1), currentYearDisplayed);
+        buildCalendar((currentMonthDisplayed - 1), currentYearDisplayed, calendarInstance.id);
     }
 }
 
-function currentMonth() {
+function currentMonth(event) {
+    var calendarInstance = event.target.closest(`.simple-calendar-root`);
     var today = new Date();
-    var mm = today.getMonth(); //January is 0!
-    var yyyy = today.getFullYear();
+    var month = today.getMonth(); //January is 0!
+    var year = today.getFullYear();
 
-    buildCalendar(mm, yyyy);
+    buildCalendar(month, year, calendarInstance.id);
 }
-
-// function getCallingInstance() {
-
-// }
 
 //Uses the JavaScript Date convention - Months 0-11, Days 1-31
-function buildCalendar(month, year) {
-    currentMonthDisplayed = month;
-    currentYearDisplayed = year;
+function buildCalendar(month, year, calendarId) {
+    var calendarInstance = document.getElementById(calendarId);
+    calendarInstance.setAttribute(`simple-calendar-current-month`, month);
+    calendarInstance.setAttribute(`simple-calendar-current-year`, year);
 
     var cssTagsForDaysOfWeek = ["", "", "", "", "", "", ""];
     var dataDatesForDaysOfWeek = ["", "", "", "", "", "", ""];
@@ -57,8 +63,7 @@ function buildCalendar(month, year) {
     today = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
     
     htmlToAdd += `<tr class="calendar-day-of-week-header">`;
-    for(i =0 ; i < 7; i++)
-    {
+    for(i =0 ; i < 7; i++) {
         var cssClass = (i == 0 || i  == 6) ? `calendar-day-weekend` : ``;
         htmlToAdd += `<td class="${cssClass}">${daysOfWeek[i]}</td>`;
     }
@@ -102,10 +107,10 @@ function buildCalendar(month, year) {
     htmlToAdd = `<table class="calendar-table">${htmlToAdd}</table>`;
 
     //todo the ID should be passed in.
-    document.getElementById(itemToBindTo).innerHTML = htmlToAdd;
-    document.getElementById("calendar-lastMonthButton").addEventListener("click", function () { lastMonth(); });
-    document.getElementById("calendar-nextMonthButton").addEventListener("click", function () { nextMonth() });
-    document.getElementById("calendar-currnetMonthButton").addEventListener("click", function () { currentMonth() });
+    calendarInstance.innerHTML = htmlToAdd;
+    calendarInstance.querySelector(".calendar-lastMonthButton").addEventListener("click", lastMonth);
+    calendarInstance.querySelector(".calendar-nextMonthButton").addEventListener("click", nextMonth);
+    calendarInstance.querySelector(".calendar-currnetMonthButton").addEventListener("click", currentMonth);
 }
 
 function getHeaderPart(month, year) {
@@ -113,9 +118,9 @@ function getHeaderPart(month, year) {
     monthTitle = firstOfMonth.toLocaleString('default', { month: 'long'});
 
     var htmlToAdd = `<div><h3 class="calendar-header-title">${monthTitle} ${year}</h3>`;
-    htmlToAdd += `<div class="calendar-header-buttons"><button id="calendar-lastMonthButton" class="btn btn-primary">&lt;</button>&nbsp;`;
-    htmlToAdd += `<button id="calendar-nextMonthButton" class="btn btn-primary">&gt;</button></div>`;
-    htmlToAdd += `<div class="calendar-header-buttons"><button  id="calendar-currnetMonthButton" class="btn btn-primary">Today</buutton></div></div>`;
+    htmlToAdd += `<div class="calendar-header-buttons"><button class="calendar-lastMonthButton btn btn-primary">&lt;</button>&nbsp;`;
+    htmlToAdd += `<button class="calendar-nextMonthButton btn btn-primary">&gt;</button></div>`;
+    htmlToAdd += `<div class="calendar-header-buttons"><button class="calendar-currnetMonthButton btn btn-primary">Today</buutton></div></div>`;
     return htmlToAdd;
 }
 
