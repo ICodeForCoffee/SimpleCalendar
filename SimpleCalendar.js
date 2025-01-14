@@ -6,10 +6,9 @@ function simpleCalendar(calendarId) {
     var today = new Date();
     var month = today.getMonth(); //January is 0!
     var year = today.getFullYear();
-    simpleCalendarDaysOfWeek = getDaysOfWeek();
-
-    calendarInstance.setAttribute(`simple-calendar-current-month`, month);
-    calendarInstance.setAttribute(`simple-calendar-current-year`, year);
+    if (simpleCalendarDaysOfWeek == null) {
+        simpleCalendarDaysOfWeek = getDaysOfWeek();
+    }
 
     buildCalendar(month, year, calendarId);
 }
