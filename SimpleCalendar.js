@@ -1,4 +1,4 @@
-var daysOfWeek;
+var simpleCalendarDaysOfWeek;
 
 function simpleCalendar(calendarId) {
     var calendarInstance = document.getElementById(calendarId);
@@ -6,7 +6,7 @@ function simpleCalendar(calendarId) {
     var today = new Date();
     var month = today.getMonth(); //January is 0!
     var year = today.getFullYear();
-    daysOfWeek = getDaysOfWeek();
+    simpleCalendarDaysOfWeek = getDaysOfWeek();
 
     calendarInstance.setAttribute(`simple-calendar-current-month`, month);
     calendarInstance.setAttribute(`simple-calendar-current-year`, year);
@@ -65,7 +65,7 @@ function buildCalendar(month, year, calendarId) {
     htmlToAdd += `<tr class="calendar-day-of-week-header">`;
     for(i =0 ; i < 7; i++) {
         var cssClass = (i == 0 || i  == 6) ? `calendar-day-weekend` : ``;
-        htmlToAdd += `<td class="${cssClass}">${daysOfWeek[i]}</td>`;
+        htmlToAdd += `<td class="${cssClass}">${simpleCalendarDaysOfWeek[i]}</td>`;
     }
 
     for (var i = 0; daysInMonth >= dayOfMonthCounter && i < 6; i++) {
