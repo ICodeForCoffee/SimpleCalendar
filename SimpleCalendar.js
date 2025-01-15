@@ -4,7 +4,7 @@ function simpleCalendar(calendarId) {
     var calendarInstance = document.getElementById(calendarId);
     calendarInstance.classList.add(`simple-calendar-root`);
     var today = new Date();
-    var month = today.getMonth(); //January is 0!
+    var month = today.getMonth();
     var year = today.getFullYear();
     if (simpleCalendarDaysOfWeek == null) {
         simpleCalendarDaysOfWeek = getDaysOfWeek();
@@ -40,7 +40,7 @@ function lastMonth(event) {
 function currentMonth(event) {
     var calendarInstance = event.target.closest(`.simple-calendar-root`);
     var today = new Date();
-    var month = today.getMonth(); //January is 0!
+    var month = today.getMonth();
     var year = today.getFullYear();
 
     buildCalendar(month, year, calendarInstance.id);
@@ -105,7 +105,6 @@ function buildCalendar(month, year, calendarId) {
 
     htmlToAdd = `<table class="calendar-table">${htmlToAdd}</table>`;
 
-    //todo the ID should be passed in.
     calendarInstance.innerHTML = htmlToAdd;
     calendarInstance.querySelector(".calendar-lastMonthButton").addEventListener("click", lastMonth);
     calendarInstance.querySelector(".calendar-nextMonthButton").addEventListener("click", nextMonth);
