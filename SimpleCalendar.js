@@ -1,27 +1,29 @@
 var simpleCalendarDaysOfWeek;
 
-function simpleCalendar(calendarId) {
+function simpleCalendar(calendarId, options = {}) {
     var calendarInstance = document.getElementById(calendarId);
     calendarInstance.classList.add(`simple-calendar-root`);
     var today = new Date();
     var month = today.getMonth();
     var year = today.getFullYear();
     if (simpleCalendarDaysOfWeek == null) {
-        simpleCalendarDaysOfWeek = getDaysOfWeek();
+        simpleCalendarDaysOfWeek = getDaysOfWeek(options["locale"]);
     }
 
-    buildCalendar(month, year, calendarId);
+    calendarInstance.setAttribute(`simple-calendar-options`, JSON.stringify(options));
+    buildCalendar(month, year, calendarId, options);
 }
 
 function nextMonth(event) {
     var calendarInstance = event.target.closest(`.simple-calendar-root`);
     currentMonthDisplayed = parseInt(calendarInstance.getAttribute(`simple-calendar-current-month`));
     currentYearDisplayed = parseInt(calendarInstance.getAttribute(`simple-calendar-current-year`));
+    options = JSON.parse(calendarInstance.getAttribute(`simple-calendar-options`));
 
     if (currentMonthDisplayed === 11) {
-        buildCalendar(0, (currentYearDisplayed + 1), calendarInstance.id);
+        buildCalendar(0, (currentYearDisplayed + 1), calendarInstance.id, options);
     } else {
-        buildCalendar((currentMonthDisplayed + 1), currentYearDisplayed, calendarInstance.id);
+        buildCalendar((currentMonthDisplayed + 1), currentYearDisplayed, calendarInstance.id, options);
     }
 }
 
@@ -29,11 +31,12 @@ function lastMonth(event) {
     var calendarInstance = event.target.closest(`.simple-calendar-root`);
     currentMonthDisplayed = parseInt(calendarInstance.getAttribute(`simple-calendar-current-month`));
     currentYearDisplayed = parseInt(calendarInstance.getAttribute(`simple-calendar-current-year`));
+    options = JSON.parse(calendarInstance.getAttribute(`simple-calendar-options`));
 
     if (currentMonthDisplayed === 0) {
-        buildCalendar(11, (currentYearDisplayed - 1), calendarInstance.id);
+        buildCalendar(11, (currentYearDisplayed - 1), calendarInstance.id, options);
     } else {
-        buildCalendar((currentMonthDisplayed - 1), currentYearDisplayed, calendarInstance.id);
+        buildCalendar((currentMonthDisplayed - 1), currentYearDisplayed, calendarInstance.id, options);
     }
 }
 
@@ -47,17 +50,18 @@ function currentMonth(event) {
 }
 
 //Uses the JavaScript Date convention - Months 0-11, Days 1-31
-function buildCalendar(month, year, calendarId) {
+function buildCalendar(month, year, calendarId, options = {}) {
     var calendarInstance = document.getElementById(calendarId);
     calendarInstance.setAttribute(`simple-calendar-current-month`, month);
     calendarInstance.setAttribute(`simple-calendar-current-year`, year);
+    
 
     var cssTagsForDaysOfWeek = ["", "", "", "", "", "", ""];
     var dataDatesForDaysOfWeek = ["", "", "", "", "", "", ""];
     var monthStartDayOfWeek = getStartOfMonth((month), year);
     var daysInMonth = getDaysInMonth(month, year);
     var dayOfMonthCounter = 1;
-    var htmlToAdd = getHeaderPart(month, year);
+    var htmlToAdd = getHeaderPart(month, year, options["locale"]);
     var today = new Date();
     today = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
     
@@ -111,9 +115,13 @@ function buildCalendar(month, year, calendarId) {
     calendarInstance.querySelector(".calendar-currnetMonthButton").addEventListener("click", currentMonth);
 }
 
-function getHeaderPart(month, year) {
+function getHeaderPart(month, year, locale) {
+    if (locale === undefined) {
+        locale = `default`;
+    }
+
     firstOfMonth = new Date(year,  month, 1)
-    monthTitle = firstOfMonth.toLocaleString('default', { month: 'long'});
+    monthTitle = firstOfMonth.toLocaleString(locale, { month: 'long'});
 
     var htmlToAdd = `<div><h3 class="calendar-header-title">${monthTitle} ${year}</h3>`;
     htmlToAdd += `<div class="calendar-header-buttons"><button class="calendar-lastMonthButton btn btn-primary">&lt;</button>&nbsp;`;
@@ -122,11 +130,15 @@ function getHeaderPart(month, year) {
     return htmlToAdd;
 }
 
-function getDaysOfWeek() {
+function getDaysOfWeek(locale) {
+    if (locale === undefined) {
+        locale = `default`;
+    }
+
     var daysOfWeek = [];
     for (i = 1; i <= 7; i++) {
         firstOfMonth = new Date(2024,  11, i)
-        daysOfWeek[i-1] = firstOfMonth.toLocaleString('default', { weekday: 'long'});
+        daysOfWeek[i-1] = firstOfMonth.toLocaleString(locale, { weekday: 'long'});
     }
     return daysOfWeek;
 }
